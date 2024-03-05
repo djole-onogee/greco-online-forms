@@ -10,6 +10,7 @@ import {
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import PageTransition from "@/components/PageTransition/PageTransition";
+import Image from "next/image";
 
 type Props = {};
 
@@ -31,7 +32,7 @@ function AuthPage({}: Props) {
         <StyledPaper>
           <LogoIconWrap>
             {" "}
-            <img
+            <Image
               alt="asd"
               src="./assets/greco-logo.svg"
               height={70}

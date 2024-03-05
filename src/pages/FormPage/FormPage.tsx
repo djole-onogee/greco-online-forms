@@ -14,6 +14,7 @@ import Question from "@/components/Questions/QuestionYesNo/QuestionYesNo";
 import { Controller, useFormContext } from "react-hook-form";
 import QuestionYesNo from "@/components/Questions/QuestionYesNo/QuestionYesNo";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 type Props = {};
 
@@ -48,7 +49,7 @@ function FormPage({}: Props) {
         >
           <LogoIconWrap>
             {" "}
-            <img
+            <Image
               alt="asd"
               src="./assets/greco-logo.svg"
               height={75}
