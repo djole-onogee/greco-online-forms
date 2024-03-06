@@ -29,7 +29,7 @@ const LogoIconWrap = styled.div`
 type Props = {};
 
 function FormPage({}: Props) {
-  const { control, register, watch } = useFormContext();
+  const { control, register, watch } = useFormContext() ?? {};
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
