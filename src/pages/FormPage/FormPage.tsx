@@ -6,7 +6,7 @@ import {
   LogoIconWrap,
   PhoneNumberWrap,
   StyledPaper,
-} from "./FormPageStyle";
+} from "./FormStyle";
 import { TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import PageTransition from "@/components/PageTransition/PageTransition";
