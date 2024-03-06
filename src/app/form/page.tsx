@@ -1,5 +1,5 @@
 "use client";
-import FormPageWrapper from "@/pages/FormPage/FormPageWrapper";
+import FormPageWrapper from "@/layouts/FormPage/FormPageWrapper";
 import React from "react";
 
 type Props = {};
