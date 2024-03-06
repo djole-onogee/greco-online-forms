@@ -78,9 +78,6 @@ function FormPage({}: Props) {
     formState: { errors },
   } = useFormContext() ?? {};
 
-  if (!control) return null;
-  if (!errors) return null;
-
   const fadeInVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 1 } },
