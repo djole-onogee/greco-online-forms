@@ -1,3 +1,51 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "react/display-name": "off",
+    "@next/next/no-img-element": "off",
+    "@next/next/no-css-tags": "off",
+    "react/no-unescaped-entities": "off",
+    "no-unused-vars": "off",
+    "import/no-anonymous-default-export": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@next/next/no-page-custom-font": "off",
+    "lines-around-comment": "off",
+    "newline-before-return": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "import/newline-after-import": [
+      "off",
+      {
+        "count": 1
+      }
+    ],
+    "@typescript-eslint/ban-types": [
+      "off",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ]
+  },
+  "plugins": ["import"],
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": ["./tsconfig.json"]
+      }
+    }
+  }
 }
