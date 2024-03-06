@@ -70,28 +70,29 @@ type Props = {};
 
 function FormPage({}: Props) {
   const router = useRouter();
-  const {
-    control,
-    register,
-    watch,
-    formState: { errors },
-  } = useFormContext();
+  // const {
+  //   control,
+  //   register,
+  //   watch,
+  //   formState: { errors },
+  // } = useFormContext();
 
-  const fadeInVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 1 } },
-  };
+  // const fadeInVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: { opacity: 1, transition: { duration: 1 } },
+  // };
 
-  const validateQuestion = (value: any) => {
-    if (value === null || value === "" || value === undefined) {
-      return "please-answer-qestion";
-    }
-    return true;
-  };
+  // const validateQuestion = (value: any) => {
+  //   if (value === null || value === "" || value === undefined) {
+  //     return "please-answer-qestion";
+  //   }
+  //   return true;
+  // };
 
   return (
     <PageTransition>
-      <BackgroundWrap>
+      <p>asd</p>
+      {/* <BackgroundWrap>
         <motion.div
           initial="hidden"
           animate="visible"
@@ -194,7 +195,7 @@ function FormPage({}: Props) {
             </motion.div>
           )}
         />
-      </BackgroundWrap>
+      </BackgroundWrap> */}
     </PageTransition>
   );
 }
