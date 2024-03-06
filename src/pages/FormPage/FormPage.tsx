@@ -71,12 +71,7 @@ type Props = {};
 function FormPage({}: Props) {
   const router = useRouter();
 
-  const {
-    control,
-    register,
-    watch,
-    formState: { errors },
-  } = useFormContext() ?? {};
+  const { control, register, watch } = useFormContext() ?? {};
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
