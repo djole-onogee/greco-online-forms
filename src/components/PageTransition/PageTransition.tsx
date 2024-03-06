@@ -1,3 +1,4 @@
+"use client";
 // components/PageTransition.tsx
 import { motion, Variants } from "framer-motion";
 import { ReactNode } from "react";
