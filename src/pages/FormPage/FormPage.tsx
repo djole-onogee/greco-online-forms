@@ -7,18 +7,6 @@ import QuestionYesNo from "@/components/Questions/QuestionYesNo/QuestionYesNo";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import styled from "styled-components";
-import { keyframes } from "styled-components";
-
-const ringAnimation = keyframes`
-  0% { transform: rotate(0); }
-  10% { transform: rotate(15deg); }
-  20% { transform: rotate(-10deg); }
-  30% { transform: rotate(10deg); }
-  40% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
-  60% { transform: rotate(0); }
-  100% { transform: rotate(0); }
-`;
 
 const BackgroundWrap = styled.div`
   display: flex;
@@ -41,9 +29,7 @@ const LogoIconWrap = styled.div`
 type Props = {};
 
 function FormPage({}: Props) {
-  const router = useRouter();
-
-  const { control, register, watch } = useFormContext() ?? {};
+  const { control, register, watch } = useFormContext();
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
