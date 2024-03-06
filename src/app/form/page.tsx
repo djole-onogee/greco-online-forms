@@ -5,11 +5,7 @@ import React from "react";
 type Props = {};
 
 function Form({}: Props) {
-  return (
-    <FormPageWrapper>
-      <FormPage />
-    </FormPageWrapper>
-  );
+  return <FormPageWrapper />;
 }
 
 export default Form;

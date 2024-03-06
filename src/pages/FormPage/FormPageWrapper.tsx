@@ -1,15 +1,18 @@
 "use client";
 import React from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
+import FormPage from "./FormPage";
 
-interface FormPageWrapperProps {
-  children: React.ReactNode;
-}
+interface Props {}
 
-function FormPageWrapper({ children }: FormPageWrapperProps) {
+function FormPageWrapper({}: Props) {
   const methods = useForm();
 
-  return <FormProvider {...methods}>{children}</FormProvider>;
+  return (
+    <FormProvider {...methods}>
+      <FormPage />
+    </FormProvider>
+  );
 }
 
 export default FormPageWrapper;
