@@ -39,8 +39,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => (
     variants={pageVariants}
     transition={pageTransition}
     style={{
-      width: "100dvw",
-      height: "100dvh",
+      width: "auto",
+      height: "auto",
       background: "#fff",
     }}
   >
