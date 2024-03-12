@@ -9,7 +9,7 @@ export const getBaseURL = () => {
       return "https://client-forms-demo.azurewebsites.net/";
     }
 
-    if (domain.includes("grecoit.online")) {
+    if (domain.includes("greco-online-forms")) {
       return "https://client-forms-demo.azurewebsites.net/";
     }
 
