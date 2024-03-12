@@ -1,6 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { TextField } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Box,
+  CircularProgress,
+  LinearProgress,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 import PageTransition from "@/components/PageTransition/PageTransition";
 import Image from "next/image";
@@ -8,6 +14,9 @@ import { Paper } from "@mui/material";
 import styled from "styled-components";
 import { keyframes } from "styled-components";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import { appService } from "@/utils/gofService";
+import { motion } from "framer-motion";
+import { FormContext } from "@/contexts/FormContext";
 
 const ringAnimation = keyframes`
   0% { transform: rotate(0); }
@@ -59,50 +68,114 @@ const PhoneNumberWrap = styled.div`
   padding: 20px 20px 5px 20px;
 `;
 
+const shakeAnimation = {
+  shake: {
+    x: [0, -10, 10, -10, 10, 0],
+    transition: { type: "linear", duration: 0.4 },
+  },
+};
+
 type Props = {};
 
 function AuthPage({}: Props) {
   const [lastDigits, setLastDigits] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { setQuestions } = useContext(FormContext);
+
+  const fetchInitialData = async () => {
+    try {
+      const response = await appService.initialRequest();
+
+      setPhoneNumber(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
-    console.log("lastDigits", lastDigits.length);
-    if (lastDigits?.length === 3) {
-      console.log("confirm");
-      router.push("/form");
-    }
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    setError(false);
+
+    const checkPhoneNumber = async () => {
+      if (lastDigits?.length === 4) {
+        try {
+          setLoading(true);
+          const response = await appService.checkPhoneNumber({
+            phoneNumber: lastDigits,
+          });
+          if (response) {
+            setLoading(false);
+            setQuestions(response?.data);
+            router.push("/form");
+          }
+        } catch (error) {
+          setLoading(false);
+          setError(true);
+        }
+      }
+    };
+
+    checkPhoneNumber();
   }, [lastDigits]);
 
   return (
     <PageTransition>
       <BackgroundWrap>
-        <StyledPaper>
-          <LogoIconWrap>
-            {" "}
-            <Image
-              alt="asd"
-              src="./assets/greco-logo.svg"
-              height={70}
-              width={70}
-            />
-          </LogoIconWrap>
-          <PhoneNumberWrap>
-            <AnimatedIcon />
-            <p>+381 64 1235XXX</p>
-          </PhoneNumberWrap>
-          <TextField
-            id="standard-basic"
-            variant="standard"
-            label="Enter last three digits"
-            value={lastDigits}
-            onChange={(e) => {
-              const newValue = e.target.value.replace(/[^\d]/g, "");
-              if (newValue.length <= 3) {
-                setLastDigits(newValue);
-              }
-            }}
-          />
-        </StyledPaper>
+        <motion.div animate={error ? "shake" : ""} variants={shakeAnimation}>
+          <StyledPaper>
+            <LogoIconWrap>
+              {" "}
+              <Image
+                alt="asd"
+                src="./assets/greco-logo.svg"
+                height={70}
+                width={70}
+              />
+            </LogoIconWrap>
+            {phoneNumber ? (
+              <PhoneNumberWrap>
+                <AnimatedIcon />
+                <p>{phoneNumber}</p>{" "}
+              </PhoneNumberWrap>
+            ) : (
+              <Stack
+                sx={{
+                  width: "60%",
+                  color: "grey.500",
+                  marginTop: "15px",
+                  marginBottom: "15 px",
+                }}
+                spacing={2}
+              >
+                <LinearProgress color="primary" />
+              </Stack>
+            )}
+
+            {loading ? (
+              <CircularProgress size={25} style={{ marginTop: 15 }} />
+            ) : (
+              <TextField
+                id="standard-basic"
+                variant="standard"
+                label="Enter last four digits"
+                value={lastDigits}
+                color={error ? "warning" : "primary"}
+                onChange={(e) => {
+                  const newValue = e.target.value.replace(/[^\d]/g, "");
+                  if (newValue.length <= 4) {
+                    setLastDigits(newValue);
+                  }
+                }}
+              />
+            )}
+          </StyledPaper>
+        </motion.div>
       </BackgroundWrap>
     </PageTransition>
   );

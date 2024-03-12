@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "./registry";
+import { FormProvider } from "@/contexts/FormContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StyledComponentsRegistry>
-        <body className={inter.className} style={{ background: "#fff" }}>
-          {children}
-        </body>
+        <FormProvider>
+          <body className={inter.className} style={{ background: "#fff" }}>
+            {children}
+          </body>
+        </FormProvider>
       </StyledComponentsRegistry>
     </html>
   );

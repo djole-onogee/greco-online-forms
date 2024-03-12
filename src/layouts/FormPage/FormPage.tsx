@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import PageTransition from "@/components/PageTransition/PageTransition";
 import { Controller, useFormContext } from "react-hook-form";
@@ -7,8 +7,11 @@ import QuestionYesNo from "@/components/Questions/QuestionYesNo/QuestionYesNo";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import styled from "styled-components";
-import QuestionTextInput from "@/components/Questions/QuestionTextInput.tsx/QuestionTextInput";
+import QuestionTextInput from "@/components/Questions/QuestionTextInput/QuestionTextInput";
 import { Button, Paper } from "@mui/material";
+import QuestionCheckboxes from "@/components/Questions/QuestionCheckboxes/QuestionCheckboxes";
+import { FormContext } from "@/contexts/FormContext";
+import QuestionDatePicker from "@/components/Questions/QuestionDatePicker/QuestionDatePicker";
 
 const BackgroundWrap = styled.div`
   display: flex;
@@ -18,6 +21,7 @@ const BackgroundWrap = styled.div`
   height: 100dvh;
   background-color: #fff;
   padding-top: 40px;
+  padding-bottom: 40px;
 `;
 
 const LogoIconWrap = styled.div`
@@ -62,13 +66,27 @@ const QuestionWrap = styled("div")`
 
   & > div {
     flex: 1;
-    min-width: calc(50% - 20px);
+    min-width: ${(props) =>
+      props.content === "0" ? `calc(30% - 20px)` : "calc(50% - 20px)"};
   }
 `;
+
+const SectionWrap = styled(Paper)`
+  border-radius: 12px;
+  box-shadow: 0px 0px 12px 0px #00000026;
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+  width: 90%;
+  margin-bottom: 20px;
+`;
+
 type Props = {};
 
 function FormPage({}: Props) {
   const { control, register, watch } = useFormContext() ?? {};
+  const { questions } = useContext(FormContext);
+
   const router = useRouter();
 
   const fadeInVariants = {
@@ -83,140 +101,154 @@ function FormPage({}: Props) {
     return true;
   };
 
+  const renderSections = (questions: any) => {
+    return questions?.sections?.map((section: any, index: number) => {
+      return (
+        <>
+          <p style={{ color: "black", width: "88%", marginBottom: 10 }}>
+            {" "}
+            {section.title}
+          </p>
+          <SectionWrap>
+            <QuestionWrap content={index === 0 ? "0" : "1"}>
+              {section?.fields?.map((question: any, index: number) => {
+                if (question?.type === 2) {
+                  return (
+                    <Controller
+                      key={index}
+                      {...register(`${question?.id}`, {
+                        validate: validateQuestion,
+                      })}
+                      name={`${question?.id}`}
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          variants={fadeInVariants}
+                        >
+                          <QuestionCheckboxes
+                            value={value}
+                            onChange={onChange}
+                            label={question?.label}
+                          />
+                        </motion.div>
+                      )}
+                    />
+                  );
+                } else if (question?.type === 0) {
+                  return (
+                    <Controller
+                      key={index}
+                      {...register(`${question?.id}`, {
+                        validate: validateQuestion,
+                      })}
+                      name={`${question?.id}`}
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          variants={fadeInVariants}
+                        >
+                          <QuestionTextInput
+                            value={value}
+                            onChange={onChange}
+                            label={question?.label}
+                          />
+                        </motion.div>
+                      )}
+                    />
+                  );
+                } else if (question?.type === 3) {
+                  return (
+                    <Controller
+                      key={index}
+                      {...register(`${question?.id}`, {
+                        validate: validateQuestion,
+                      })}
+                      name={`${question?.id}`}
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          variants={fadeInVariants}
+                        >
+                          <QuestionYesNo
+                            value={value}
+                            onChange={onChange}
+                            label={question?.label}
+                          />
+                        </motion.div>
+                      )}
+                    />
+                  );
+                } else if (question?.type === 5) {
+                  return (
+                    <Controller
+                      key={index}
+                      {...register(`${question?.id}`, {
+                        validate: validateQuestion,
+                      })}
+                      name={`${question?.id}`}
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          variants={fadeInVariants}
+                        >
+                          <QuestionDatePicker
+                            value={value}
+                            onChange={onChange}
+                            label={question?.label}
+                          />
+                        </motion.div>
+                      )}
+                    />
+                  );
+                } else return "aaa";
+              })}
+            </QuestionWrap>
+          </SectionWrap>
+        </>
+      );
+    });
+  };
+
+  useEffect(() => {
+    console.log("questions", questions);
+  }, [questions]);
+
   return (
     <PageTransition>
-      <StyledPaper>
-        <BackgroundWrap>
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInVariants}
-          >
-            <LogoIconWrap>
-              {" "}
-              <Image
-                alt="asd"
-                src="./assets/greco-logo.svg"
-                height={75}
-                width={75}
-              />
-            </LogoIconWrap>
-          </motion.div>
+      <BackgroundWrap>
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeInVariants}
+        >
+          <LogoIconWrap>
+            {" "}
+            <Image
+              alt="asd"
+              src="./assets/greco-logo.svg"
+              height={75}
+              width={75}
+            />
+          </LogoIconWrap>
+        </motion.div>
 
-          <QuestionWrap>
-            <Controller
-              key={1}
-              {...register(`firstQuestioText`, {
-                validate: validateQuestion,
-              })}
-              name={`firstQuestionText`}
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInVariants}
-                >
-                  <QuestionTextInput value={value} onChange={onChange} />
-                </motion.div>
-              )}
-            />
+        {renderSections(questions)}
 
-            <Controller
-              key={1}
-              {...register(`firstQuestion`, {
-                validate: validateQuestion,
-              })}
-              name={`firstQuestion`}
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInVariants}
-                >
-                  <QuestionYesNo value={value} onChange={onChange} />
-                </motion.div>
-              )}
-            />
-
-            <Controller
-              key={1}
-              {...register(`secondQuestion`, {
-                validate: validateQuestion,
-              })}
-              name={`secondQuestion`}
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInVariants}
-                >
-                  <QuestionYesNo value={value} onChange={onChange} />
-                </motion.div>
-              )}
-            />
-            <Controller
-              key={1}
-              {...register(`thirdQuestion`, {
-                validate: validateQuestion,
-              })}
-              name={`thirdQuestion`}
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInVariants}
-                >
-                  <QuestionYesNo value={value} onChange={onChange} />
-                </motion.div>
-              )}
-            />
-            <Controller
-              key={1}
-              {...register(`fourthQuestion`, {
-                validate: validateQuestion,
-              })}
-              name={`fourthQuestion`}
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInVariants}
-                >
-                  <QuestionYesNo value={value} onChange={onChange} />
-                </motion.div>
-              )}
-            />
-            <Controller
-              key={1}
-              {...register(`fifthQuestion`, {
-                validate: validateQuestion,
-              })}
-              name={`fifthhQuestion`}
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={fadeInVariants}
-                >
-                  <QuestionYesNo value={value} onChange={onChange} />
-                </motion.div>
-              )}
-            />
-          </QuestionWrap>
-          <StyledButton
-            variant="outlined"
-            onClick={() => router.push("form-preview")}
-          >
-            Confirm Answers
-          </StyledButton>
-        </BackgroundWrap>
-      </StyledPaper>
+        <StyledButton
+          variant="outlined"
+          onClick={() => router.push("form-preview")}
+        >
+          Confirm Answers
+        </StyledButton>
+      </BackgroundWrap>
     </PageTransition>
   );
 }

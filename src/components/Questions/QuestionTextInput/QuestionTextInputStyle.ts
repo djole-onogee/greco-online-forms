@@ -2,7 +2,9 @@ import { Card, styled } from "@mui/material";
 
 export const QuestionWrap = styled("div")(({ theme }) => ({
   display: "flex",
+  flexDirection: "row",
   justifyContent: "space-between",
+  alignItems: "center",
 }));
 
 export const PaddingFull = styled("div")(({ theme }) => ({

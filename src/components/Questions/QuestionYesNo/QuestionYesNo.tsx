@@ -8,18 +8,13 @@ import {
 } from "./QuestionYesNoStyle";
 import { Button } from "@mui/material";
 
-type Props = { value: any; onChange: any };
+type Props = { value: any; onChange: any; label: string };
 
-function QuestionYesNo({ value, onChange }: Props) {
+function QuestionYesNo({ value, onChange, label }: Props) {
   return (
     <CardPadding>
       <QuestionWrap>
-        <FormText>
-          This is the question asdsdasdsada ssdasdsadasdsadsadsfass sdadsadasds
-          adasdasdasdas asd sadasdasdsdasdsadasdasdasdsadsdasddasdsadas
-          dsdsadsadasds dasdsdadsadasds dasdasdas dasdasdsa adsdasd sadasds
-          dasdasdas
-        </FormText>
+        <FormText>{label}</FormText>
 
         <ButtonFormWrap>
           <Button
@@ -29,7 +24,7 @@ function QuestionYesNo({ value, onChange }: Props) {
             }}
             style={{ textTransform: "none" }}
           >
-            Yes
+            Ja
           </Button>
           <Button
             variant={value === "1" ? "contained" : "outlined"}
@@ -38,7 +33,7 @@ function QuestionYesNo({ value, onChange }: Props) {
             }}
             style={{ textTransform: "none" }}
           >
-            No
+            Nein
           </Button>
         </ButtonFormWrap>
       </QuestionWrap>
