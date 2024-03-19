@@ -17,6 +17,9 @@ import PageTransition from "@/components/PageTransition/PageTransition";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import DemoTemplate from "./Templates/DemoTemplate";
+import { FormContext } from "@/contexts/FormContext";
+import { appService } from "@/utils/gofService";
 
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
@@ -43,7 +46,7 @@ const StyledPaper = styled(Paper)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 60px;
+  margin: auto;
 `;
 
 const LogoIconWrap = styled("div")`
@@ -64,11 +67,59 @@ const ButtonWrap = styled("div")(({ theme }) => ({
 
 const Signing = () => {
   const [signatureImageURI, setSignatureImageURI] = useState(null);
+  const [signatureUploadImage, setSignatureUploadImage] = useState(null);
+  const [url, setUrl] = useState<string | null>(null);
+
+  const { answers } = useContext(FormContext);
+
   const router = useRouter();
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 1 } },
+  };
+
+  const getPDFURL = async () => {
+    const template = (
+      <DemoTemplate
+        signature={signatureImageURI}
+        signatureUploadImage={signatureUploadImage}
+        answers={answers}
+      />
+    );
+    const instance = pdf(template);
+    const blob = await instance.toBlob();
+
+    const url = URL.createObjectURL(blob);
+    setUrl(url);
+  };
+
+  useEffect(() => {
+    getPDFURL();
+  }, [signatureImageURI]);
+
+  const handleFinishProcess = async () => {
+    const template = (
+      <DemoTemplate
+        signature={signatureImageURI}
+        signatureUploadImage={signatureUploadImage}
+        answers={answers}
+      />
+    );
+    const instance = pdf(template);
+    let blobPayload;
+
+    try {
+      blobPayload = await instance.toBlob();
+      const formData = new FormData();
+      formData.append("file", blobPayload, "document.pdf");
+      await appService
+        .uploadPdf("fd962898-fc34-49ae-a2f7-83edcca61a8d", formData)
+        .then((e) => router.push("/finish"))
+        .catch((err) => console.log("err", err));
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
@@ -98,7 +149,11 @@ const Signing = () => {
                 style={{ borderRadius: "12px", marginTop: 20 }}
                 showToolbar={false}
               >
-                <p>asdads</p>
+                <DemoTemplate
+                  signature={signatureImageURI}
+                  signatureUploadImage={signatureUploadImage}
+                  answers={answers}
+                />
               </DynamicPDFViewer>
             </Grid>
             <Grid item xs={12}>
@@ -113,7 +168,9 @@ const Signing = () => {
         <ButtonWrap>
           <StyledButton
             variant="outlined"
-            onClick={() => router.push("/finish")}
+            onClick={() => {
+              handleFinishProcess();
+            }}
           >
             Create Document
           </StyledButton>

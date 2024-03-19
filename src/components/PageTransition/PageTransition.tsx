@@ -40,7 +40,7 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => (
     transition={pageTransition}
     style={{
       width: "auto",
-      minHeight: "150dvh",
+      height: "auto",
       background: "#fff",
     }}
   >

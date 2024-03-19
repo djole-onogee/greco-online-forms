@@ -50,8 +50,8 @@ class CstService {
     return response;
   }
 
-  public async uploadPdf(id: any, formData: any, policyID: number) {
-    const path = `/api/Values/upload-document/${id}?policyId=${policyID.toString()}`;
+  public async uploadPdf(id: any, formData: any) {
+    const path = `/api/Form/ProcessForm/${id}`;
     const response = await API_SERVICE.postFile(path, formData);
     return response;
   }

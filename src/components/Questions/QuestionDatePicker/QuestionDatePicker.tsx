@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 type Props = { value: any; onChange: any; label: string };
 
@@ -25,7 +26,13 @@ function QuestionCheckboxes({ value, onChange, label }: Props) {
         <FormText>{label}</FormText>
       </QuestionWrap>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker />
+        <DatePicker
+          onChange={(newValue: any) => {
+            const formattedDate = dayjs(newValue).format("YYYY-MM-DD");
+            onChange(formattedDate);
+          }}
+          value={value}
+        />
       </LocalizationProvider>
     </CardPadding>
   );

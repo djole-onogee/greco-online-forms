@@ -12,13 +12,13 @@ import { Button, Paper } from "@mui/material";
 import QuestionCheckboxes from "@/components/Questions/QuestionCheckboxes/QuestionCheckboxes";
 import { FormContext } from "@/contexts/FormContext";
 import QuestionDatePicker from "@/components/Questions/QuestionDatePicker/QuestionDatePicker";
+import { all } from "axios";
 
 const BackgroundWrap = styled.div`
   display: flex;
-  justify-content: flex-start;
+  align-content: center;
   flex-direction: column;
   align-items: center;
-  height: 100dvh;
   background-color: #fff;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -38,6 +38,7 @@ const StyledButton = styled(Button)`
   background-color: #0a60a8;
   text-transform: none;
   margin: 30px auto;
+  paddingbottom: 40px;
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -72,22 +73,32 @@ const QuestionWrap = styled("div")`
 `;
 
 const SectionWrap = styled(Paper)`
+  display: flex;
   border-radius: 12px;
   box-shadow: 0px 0px 12px 0px #00000026;
-  display: flex;
   flex-direction: row;
   padding: 20px;
-  width: 90%;
-  margin-bottom: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 25px;
+  justify-content: center;
+  align-items: center;
 `;
 
 type Props = {};
 
 function FormPage({}: Props) {
-  const { control, register, watch } = useFormContext() ?? {};
-  const { questions } = useContext(FormContext);
+  const {
+    control,
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useFormContext() ?? {};
+  const { questions, setAnswers } = useContext(FormContext);
 
   const router = useRouter();
+  const all = watch();
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
@@ -105,7 +116,14 @@ function FormPage({}: Props) {
     return questions?.sections?.map((section: any, index: number) => {
       return (
         <>
-          <p style={{ color: "black", width: "88%", marginBottom: 10 }}>
+          <p
+            style={{
+              color: "black",
+              width: "88%",
+              marginBottom: 10,
+              marginLeft: "50px",
+            }}
+          >
             {" "}
             {section.title}
           </p>
@@ -217,10 +235,6 @@ function FormPage({}: Props) {
     });
   };
 
-  useEffect(() => {
-    console.log("questions", questions);
-  }, [questions]);
-
   return (
     <PageTransition>
       <BackgroundWrap>
@@ -239,12 +253,15 @@ function FormPage({}: Props) {
             />
           </LogoIconWrap>
         </motion.div>
-
-        {renderSections(questions)}
+        <form>{renderSections(questions)}</form>
 
         <StyledButton
           variant="outlined"
-          onClick={() => router.push("form-preview")}
+          onClick={() => {
+            const allAnswers = watch();
+            setAnswers(allAnswers);
+            router.push("form-preview");
+          }}
         >
           Confirm Answers
         </StyledButton>
