@@ -94,9 +94,9 @@ function FinishedProcess() {
             </TextCenter>
             <PaddingFull>
               <TextTitleSecond style={{ paddingTop: 5, marginTop: 0 }}>
-                {"Lorem ipsum"}
+                {"Das Formular wurde erfolgreich an den Makler weitergeleitet"}
               </TextTitleSecond>
-              <TextSubTitle>{"Lorem Ipsum"}</TextSubTitle>
+              {/* <TextSubTitle>{"Lorem Ipsum"}</TextSubTitle> */}
             </PaddingFull>
           </StyledPaper>
         </Container>
