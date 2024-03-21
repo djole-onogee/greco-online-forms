@@ -17,7 +17,6 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { appService } from "@/utils/gofService";
 import { motion } from "framer-motion";
 import { FormContext } from "@/contexts/FormContext";
-import { useSearchParams } from "next/navigation";
 
 const ringAnimation = keyframes`
   0% { transform: rotate(0); }
@@ -85,14 +84,14 @@ function AuthPage({}: Props) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setQuestions } = useContext(FormContext);
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  // const searchParams = useSearchParams();
+  // const id = searchParams.get("id");
 
   const fetchInitialData = async () => {
-    console.log("params", id);
+    // console.log("params", id);
     try {
       const response = await appService.initialRequest(
-        id || "fd962898-fc34-49ae-a2f7-83edcca61a8d"
+        "fd962898-fc34-49ae-a2f7-83edcca61a8d"
       );
 
       setPhoneNumber(response);
@@ -103,7 +102,7 @@ function AuthPage({}: Props) {
 
   useEffect(() => {
     fetchInitialData();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     setError(false);
@@ -114,7 +113,7 @@ function AuthPage({}: Props) {
           setLoading(true);
           const response = await appService.checkPhoneNumber(
             lastDigits,
-            id || "fd962898-fc34-49ae-a2f7-83edcca61a8d"
+            "fd962898-fc34-49ae-a2f7-83edcca61a8d"
           );
           if (response) {
             setLoading(false);
