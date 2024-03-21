@@ -1,13 +1,15 @@
 import API_SERVICE from "./getEnvironment";
 
+const requestId = "fd962898-fc34-49ae-a2f7-83edcca61a8d";
+
 class CstService {
-  public async initialRequest(requestId: string) {
+  public async initialRequest() {
     const path = `/api/Form/GetPhoneNumberMasked/${requestId}`;
     const response = await API_SERVICE.get(path);
     return response;
   }
 
-  public async checkPhoneNumber(body: any, requestId: string) {
+  public async checkPhoneNumber(body: any) {
     const path = `/api/Form/CheckPhoneNumber/${requestId}`;
     const response = await API_SERVICE.postJson(path, body);
     return response;

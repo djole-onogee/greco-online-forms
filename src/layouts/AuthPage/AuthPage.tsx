@@ -84,15 +84,10 @@ function AuthPage({}: Props) {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setQuestions } = useContext(FormContext);
-  // const searchParams = useSearchParams();
-  // const id = searchParams.get("id");
 
   const fetchInitialData = async () => {
-    // console.log("params", id);
     try {
-      const response = await appService.initialRequest(
-        "fd962898-fc34-49ae-a2f7-83edcca61a8d"
-      );
+      const response = await appService.initialRequest();
 
       setPhoneNumber(response);
     } catch (error) {
@@ -111,10 +106,9 @@ function AuthPage({}: Props) {
       if (lastDigits?.length === 4) {
         try {
           setLoading(true);
-          const response = await appService.checkPhoneNumber(
-            lastDigits,
-            "fd962898-fc34-49ae-a2f7-83edcca61a8d"
-          );
+          const response = await appService.checkPhoneNumber({
+            phoneNumber: lastDigits,
+          });
           if (response) {
             setLoading(false);
             setQuestions(response?.data);
