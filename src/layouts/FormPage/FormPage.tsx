@@ -13,6 +13,7 @@ import QuestionCheckboxes from "@/components/Questions/QuestionCheckboxes/Questi
 import { FormContext } from "@/contexts/FormContext";
 import QuestionDatePicker from "@/components/Questions/QuestionDatePicker/QuestionDatePicker";
 import { all } from "axios";
+import dayjs from "dayjs";
 
 const BackgroundWrap = styled.div`
   display: flex;
@@ -92,13 +93,27 @@ function FormPage({}: Props) {
     control,
     register,
     watch,
-    handleSubmit,
+    setValue,
+    trigger,
     formState: { errors },
   } = useFormContext() ?? {};
   const { questions, setAnswers } = useContext(FormContext);
 
   const router = useRouter();
   const all = watch();
+
+  useEffect(() => {
+    questions?.sections?.map((section: any, index: number) => {
+      section?.fields?.map((question: any, index: number) => {
+        if (question?.defaultValue === null) return;
+        if (question?.id === "Schadendatum") {
+          setValue(`${question?.id}`, dayjs(question?.defaultValue));
+        } else {
+          setValue(`${question?.id}`, question?.defaultValue);
+        }
+      });
+    });
+  }, [questions]);
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
@@ -137,6 +152,7 @@ function FormPage({}: Props) {
                       {...register(`${question?.id}`, {
                         validate: validateQuestion,
                       })}
+                      defaultValue={question?.defaultValue}
                       name={`${question?.id}`}
                       control={control}
                       render={({ field: { value, onChange } }) => (
@@ -161,6 +177,7 @@ function FormPage({}: Props) {
                       {...register(`${question?.id}`, {
                         validate: validateQuestion,
                       })}
+                      defaultValue={question?.defaultValue}
                       name={`${question?.id}`}
                       control={control}
                       render={({ field: { value, onChange } }) => (
@@ -185,6 +202,7 @@ function FormPage({}: Props) {
                       {...register(`${question?.id}`, {
                         validate: validateQuestion,
                       })}
+                      defaultValue={question?.defaultValue}
                       name={`${question?.id}`}
                       control={control}
                       render={({ field: { value, onChange } }) => (
@@ -209,6 +227,7 @@ function FormPage({}: Props) {
                       {...register(`${question?.id}`, {
                         validate: validateQuestion,
                       })}
+                      defaultValue={dayjs(question?.defaultValue)}
                       name={`${question?.id}`}
                       control={control}
                       render={({ field: { value, onChange } }) => (
@@ -254,10 +273,10 @@ function FormPage({}: Props) {
           </LogoIconWrap>
         </motion.div>
         <form>{renderSections(questions)}</form>
-
         <StyledButton
           variant="outlined"
           onClick={() => {
+            trigger();
             const allAnswers = watch();
             setAnswers(allAnswers);
             router.push("form-preview");

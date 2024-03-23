@@ -12,7 +12,8 @@ type Props = {
 const FormProvider = ({ children }: Props) => {
   const [questions, setQuestions] = useState(null);
   const [answers, setAnswers] = useState(null);
-  const values = { questions, setQuestions, answers, setAnswers };
+  const [id, setId] = useState(null);
+  const values = { questions, setQuestions, answers, setAnswers, setId ,id };
 
   return <FormContext.Provider value={values}>{children}</FormContext.Provider>;
 };

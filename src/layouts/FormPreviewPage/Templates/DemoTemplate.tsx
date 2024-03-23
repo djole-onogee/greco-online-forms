@@ -3,6 +3,7 @@ import { Page, Text, View, Document, Image } from "@react-pdf/renderer";
 
 import { styles } from "./DemoTemplateStyles";
 import { FormContext } from "@/contexts/FormContext";
+import dayjs from "dayjs";
 
 function DemoTemplate({ signature, signatureUploadImage, answers }: any) {
   return (
@@ -101,7 +102,9 @@ function DemoTemplate({ signature, signatureUploadImage, answers }: any) {
           <View style={styles.row}>
             <View style={styles.cellSecondTable}>
               <Text style={styles.boldedText}>Schadendatum: </Text>
-              <Text style={styles.boldedText}>{answers?.Schadendatum}</Text>
+              <Text style={styles.boldedText}>
+                {dayjs(answers?.Schadendatum).format("DD-MM-YYYY")}
+              </Text>
             </View>
             <View style={styles.cellSecondTable}>
               <Text style={styles.boldedText}>Zeit: </Text>

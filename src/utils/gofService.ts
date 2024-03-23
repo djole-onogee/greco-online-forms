@@ -3,14 +3,14 @@ import API_SERVICE from "./getEnvironment";
 const requestId = "fd962898-fc34-49ae-a2f7-83edcca61a8d";
 
 class CstService {
-  public async initialRequest() {
-    const path = `/api/Form/GetPhoneNumberMasked/${requestId}`;
+  public async initialRequest(id: string | null) {
+    const path = `/api/Form/GetPhoneNumberMasked/${id}`;
     const response = await API_SERVICE.get(path);
     return response;
   }
 
-  public async checkPhoneNumber(body: any) {
-    const path = `/api/Form/CheckPhoneNumber/${requestId}`;
+  public async checkPhoneNumber(id: string | null, body: any) {
+    const path = `/api/Form/CheckPhoneNumber/${id}`;
     const response = await API_SERVICE.postJson(path, body);
     return response;
   }

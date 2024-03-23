@@ -75,20 +75,25 @@ const shakeAnimation = {
   },
 };
 
-type Props = {};
+type Props = { id: string | null };
 
-function AuthPage({}: Props) {
+function AuthPage({ id }: Props) {
   const [lastDigits, setLastDigits] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { setQuestions } = useContext(FormContext);
+  const { setQuestions, setId } = useContext(FormContext);
+
+  useEffect(() => {
+    if (id) {
+      setId(id);
+    }
+  }, [id]);
 
   const fetchInitialData = async () => {
     try {
-      const response = await appService.initialRequest();
-
+      const response = await appService.initialRequest(id);
       setPhoneNumber(response);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -97,7 +102,7 @@ function AuthPage({}: Props) {
 
   useEffect(() => {
     fetchInitialData();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     setError(false);
@@ -106,7 +111,7 @@ function AuthPage({}: Props) {
       if (lastDigits?.length === 4) {
         try {
           setLoading(true);
-          const response = await appService.checkPhoneNumber({
+          const response = await appService.checkPhoneNumber(id, {
             phoneNumber: lastDigits,
           });
           if (response) {
