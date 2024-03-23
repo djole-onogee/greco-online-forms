@@ -21,11 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <StyledComponentsRegistry>
         <FormProvider>
-          <Suspense fallback={<div>Loading...</div>}>
-            <body className={inter.className} style={{ background: "#fff" }}>
-              {children}
-            </body>
-          </Suspense>
+          <body className={inter.className} style={{ background: "#fff" }}>
+            {children}
+          </body>
         </FormProvider>
       </StyledComponentsRegistry>
     </html>
