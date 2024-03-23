@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "./registry";
 import { FormProvider } from "@/contexts/FormContext";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({
     <html lang="en">
       <StyledComponentsRegistry>
         <FormProvider>
-          <body className={inter.className} style={{ background: "#fff" }}>
-            {children}
-          </body>
+          <Suspense fallback={<div>Loading...</div>}>
+            <body className={inter.className} style={{ background: "#fff" }}>
+              {children}
+            </body>
+          </Suspense>
         </FormProvider>
       </StyledComponentsRegistry>
     </html>
