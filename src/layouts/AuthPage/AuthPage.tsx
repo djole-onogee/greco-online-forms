@@ -17,6 +17,7 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { appService } from "@/utils/gofService";
 import { motion } from "framer-motion";
 import { FormContext } from "@/contexts/FormContext";
+import { useSearchParams } from "next/navigation";
 
 const ringAnimation = keyframes`
   0% { transform: rotate(0); }
@@ -75,15 +76,18 @@ const shakeAnimation = {
   },
 };
 
-type Props = { id: string | null };
+type Props = {};
 
-function AuthPage({ id }: Props) {
+function AuthPage({}: Props) {
   const [lastDigits, setLastDigits] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const router = useRouter();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setQuestions, setId } = useContext(FormContext);
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
   useEffect(() => {
     if (id) {
