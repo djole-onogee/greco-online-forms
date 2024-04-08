@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   FormGroup,
   TextField,
+  Typography,
 } from "@mui/material";
 
 type Props = { value: any; onChange: any; label: string };
@@ -24,7 +25,7 @@ function QuestionCheckboxes({ value, onChange, label }: Props) {
       </QuestionWrap>
       <FormControlLabel
         control={<Checkbox onChange={onChange} value={value} />}
-        label={label}
+        label={<Typography fontWeight={800}>{label}</Typography>}
       />
     </CardPadding>
   );

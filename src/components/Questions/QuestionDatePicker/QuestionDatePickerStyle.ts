@@ -71,5 +71,5 @@ export const FormText = styled("p")(({ theme }) => ({
   padding: 0,
   fontSize: "16px",
   lineHeight: "26px",
-  fontWeight: "400",
+  fontWeight: "800",
 }));

@@ -147,7 +147,7 @@ const Signing = () => {
                 width={"100%"}
                 height={500}
                 style={{ borderRadius: "12px", marginTop: 20 }}
-                showToolbar={false}
+                showToolbar={true}
               >
                 <DemoTemplate
                   signature={signatureImageURI}
