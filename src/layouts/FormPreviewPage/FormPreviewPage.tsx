@@ -20,6 +20,8 @@ import { useRouter } from "next/navigation";
 import DemoTemplate from "./Templates/DemoTemplate";
 import { FormContext } from "@/contexts/FormContext";
 import { appService } from "@/utils/gofService";
+import { useFormContext } from "react-hook-form";
+import { render } from "react-dom";
 
 const DynamicPDFViewer = dynamic(
   () => import("@react-pdf/renderer").then((mod) => mod.PDFViewer),
@@ -69,14 +71,37 @@ const Signing = () => {
   const [signatureImageURI, setSignatureImageURI] = useState(null);
   const [signatureUploadImage, setSignatureUploadImage] = useState(null);
   const [url, setUrl] = useState<string | null>(null);
+  const [payloadFinal, setPayloadFinal] = useState([]);
 
-  const { answers, id } = useContext(FormContext);
+  const { answers, id, questions } = useContext(FormContext);
 
   const router = useRouter();
 
   const fadeInVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 1 } },
+  };
+
+  useEffect(() => {
+    renderSections(questions);
+  }, [answers]);
+
+  const renderSections = (questions: any) => {
+    const payload = questions?.sections?.map((section: any, index: number) => {
+      return section?.fields?.map((question: any, index: number) => {
+        let value = answers[question.id];
+        if (typeof value === "object" && value !== null) {
+          value = JSON.stringify(value);
+        }
+        return {
+          id: question.id,
+          value: value,
+          type: question.type,
+        };
+      });
+    });
+
+    setPayloadFinal(payload?.flat()?.filter((e: any) => e.value !== undefined));
   };
 
   const getPDFURL = async () => {
@@ -108,14 +133,18 @@ const Signing = () => {
     );
     const instance = pdf(template);
     let blobPayload;
-
     try {
       blobPayload = await instance.toBlob();
       const formData = new FormData();
       formData.append("file", blobPayload, "document.pdf");
+
+      const payloadAnswers = { answers: [...payloadFinal] };
+
+      formData.append("formData", JSON.stringify(payloadAnswers));
+
       await appService
         .uploadPdf(id, formData)
-        .then((e) => router.push("/finish"))
+        .then(() => router.push("/finish"))
         .catch((err) => console.log("err", err));
     } catch (error) {
       console.log("error", error);
@@ -167,7 +196,8 @@ const Signing = () => {
         </Container>
         <ButtonWrap>
           <StyledButton
-            variant="outlined"
+            variant="contained"
+            disabled={!signatureImageURI}
             onClick={() => {
               handleFinishProcess();
             }}

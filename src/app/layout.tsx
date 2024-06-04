@@ -4,6 +4,7 @@ import "./globals.css";
 import StyledComponentsRegistry from "./registry";
 import { FormProvider } from "@/contexts/FormContext";
 import { Suspense } from "react";
+import { useForm, useFormContext } from "react-hook-form";
 
 const inter = Inter({ subsets: ["latin"] });
 

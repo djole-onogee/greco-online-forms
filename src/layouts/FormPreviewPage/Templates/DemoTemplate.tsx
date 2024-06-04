@@ -119,7 +119,7 @@ function DemoTemplate({ signature, signatureUploadImage, answers }: any) {
             <View style={styles.cellSecondTable}>
               <Text style={styles.boldedText}>Schaden-Nr. Intern: </Text>
               <Text style={styles.boldedText}>
-                {answers?.Schaden_Nummer_Intern}
+                {answers?.Schaden_Nr_Intern}
               </Text>
             </View>
           </View>
