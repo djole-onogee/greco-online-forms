@@ -14,6 +14,7 @@ import { FormContext } from "@/contexts/FormContext";
 import QuestionDatePicker from "@/components/Questions/QuestionDatePicker/QuestionDatePicker";
 import { all } from "axios";
 import dayjs from "dayjs";
+import QuestionDropdown from "@/components/Questions/QuestionDropdown/QuestionDropdown";
 
 const BackgroundWrap = styled.div`
   display: flex;
@@ -125,6 +126,16 @@ function FormPage({}: Props) {
       return "please-answer-qestion";
     }
     return true;
+  };
+
+  const convertObjectToArray = (obj: any) => {
+    let resultArray = [];
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        resultArray.push({ key: obj[key], label: key, value: obj[key] });
+      }
+    }
+    return resultArray;
   };
 
   const renderSections = (questions: any) => {
@@ -245,7 +256,34 @@ function FormPage({}: Props) {
                       )}
                     />
                   );
-                } else return "aaa";
+                } else if (question?.type === 4) {
+                  console.log("question", question);
+                  return (
+                    <Controller
+                      key={index}
+                      {...register(`${question?.id}`, {
+                        validate: validateQuestion,
+                      })}
+                      defaultValue={dayjs(question?.defaultValue)}
+                      name={`${question?.id}`}
+                      control={control}
+                      render={({ field: { value, onChange } }) => (
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          variants={fadeInVariants}
+                        >
+                          <QuestionDropdown
+                            value={value}
+                            onChange={onChange}
+                            label={question?.label}
+                            options={convertObjectToArray(question?.options)}
+                          />
+                        </motion.div>
+                      )}
+                    />
+                  );
+                } else return "New field type on BE";
               })}
             </QuestionWrap>
           </SectionWrap>

@@ -6,6 +6,7 @@ import { FormContext } from "@/contexts/FormContext";
 import dayjs from "dayjs";
 
 function DemoTemplate({ signature, signatureUploadImage, answers }: any) {
+  console.log("answers", answers);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -180,10 +181,15 @@ function DemoTemplate({ signature, signatureUploadImage, answers }: any) {
                 />
               )}
             </View>
+
             <View style={styles.cellSecondTable}>
               <Text style={styles.boldedText}>Name Zeugen: </Text>
               <Text style={styles.boldedText}>{answers?.Name_Zeugen}</Text>
             </View>
+          </View>
+          <View style={styles.cellSecondTable}>
+            <Text style={styles.boldedText}>Fault: </Text>
+            <Text style={styles.boldedText}>{answers?.Fault?.label}</Text>
           </View>
           <View style={styles.signaturesWrap}>
             <View style={styles.signature}></View>
