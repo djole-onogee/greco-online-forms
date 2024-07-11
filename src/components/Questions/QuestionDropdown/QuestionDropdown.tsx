@@ -17,10 +17,8 @@ import { CardPadding, FormText, QuestionWrap } from "./QuestionDropdownStyle";
 type Props = { value: any; onChange: any; label: string; options: any };
 
 function QuestionCheckboxes({ value, onChange, label, options }: Props) {
-  console.log("options", options);
-
   const handleValueChange = (_: any, newValue: any) => {
-    onChange(newValue.key);
+    onChange(newValue);
   };
   return (
     <CardPadding>

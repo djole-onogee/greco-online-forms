@@ -90,8 +90,20 @@ const Signing = () => {
     const payload = questions?.sections?.map((section: any, index: number) => {
       return section?.fields?.map((question: any, index: number) => {
         let value = answers[question.id];
-        if (typeof value === "object" && value !== null) {
+
+        if (
+          typeof value === "object" &&
+          value !== null &&
+          question.type !== 4
+        ) {
           value = JSON.stringify(value);
+        }
+        if (question.type === 4) {
+          return {
+            id: question.id,
+            value: value.value,
+            type: question.type,
+          };
         }
         return {
           id: question.id,
