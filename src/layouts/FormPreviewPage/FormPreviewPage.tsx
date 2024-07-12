@@ -33,6 +33,7 @@ const StyledButton = styled(Button)`
   border-color: #0a60a8;
   background-color: #0a60a8;
   text-transform: none;
+  min-width: 300px;
   margin: 30px auto;
   transition: background-color 0.3s ease;
 
@@ -72,6 +73,7 @@ const Signing = () => {
   const [signatureUploadImage, setSignatureUploadImage] = useState(null);
   const [url, setUrl] = useState<string | null>(null);
   const [payloadFinal, setPayloadFinal] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { answers, id, questions } = useContext(FormContext);
 
@@ -90,7 +92,7 @@ const Signing = () => {
     const payload = questions?.sections?.map((section: any, index: number) => {
       return section?.fields?.map((question: any, index: number) => {
         let value = answers[question.id];
-
+        console.log("value", value);
         if (
           typeof value === "object" &&
           value !== null &&
@@ -101,7 +103,25 @@ const Signing = () => {
         if (question.type === 4) {
           return {
             id: question.id,
-            value: value.value,
+            value: value?.value,
+            type: question.type,
+          };
+        } else if (question?.type === 0) {
+          return {
+            id: question.id,
+            value: value === undefined ? null : value,
+            type: question.type,
+          };
+        } else if (question?.type === 3) {
+          return {
+            id: question.id,
+            value: value === 0 ? false : true,
+            type: question.type,
+          };
+        } else if (question?.type === 5) {
+          return {
+            id: question.id,
+            value: value.replace(/\"/g, ""),
             type: question.type,
           };
         }
@@ -153,11 +173,17 @@ const Signing = () => {
       const payloadAnswers = { answers: [...payloadFinal] };
 
       formData.append("formData", JSON.stringify(payloadAnswers));
-
+      setIsLoading(true);
       await appService
         .uploadPdf(id, formData)
-        .then(() => router.push("/finish"))
-        .catch((err) => console.log("err", err));
+        .then(() => {
+          setIsLoading(false);
+          router.push("/finish");
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log("err", err);
+        });
     } catch (error) {
       console.log("error", error);
     }
@@ -209,12 +235,12 @@ const Signing = () => {
         <ButtonWrap>
           <StyledButton
             variant="contained"
-            disabled={!signatureImageURI}
+            disabled={!signatureImageURI || isLoading}
             onClick={() => {
               handleFinishProcess();
             }}
           >
-            Create Document
+            {isLoading ? <CircularProgress size={24} /> : "Create Document"}
           </StyledButton>
         </ButtonWrap>
       </StyledPaper>

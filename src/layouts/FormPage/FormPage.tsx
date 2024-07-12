@@ -201,6 +201,7 @@ function FormPage({}: Props) {
                             value={value}
                             onChange={onChange}
                             label={question?.label}
+                            disabled={question?.disabled}
                           />
                         </motion.div>
                       )}
@@ -251,6 +252,7 @@ function FormPage({}: Props) {
                             value={value}
                             onChange={onChange}
                             label={question?.label}
+                            disabled={question?.disabled}
                           />
                         </motion.div>
                       )}

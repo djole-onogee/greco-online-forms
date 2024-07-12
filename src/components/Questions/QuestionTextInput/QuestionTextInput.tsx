@@ -8,9 +8,9 @@ import {
 } from "./QuestionTextInputStyle";
 import { Button, TextField } from "@mui/material";
 
-type Props = { value: any; onChange: any; label: string };
+type Props = { value: any; onChange: any; label: string; disabled: boolean };
 
-function QuestionTextInput({ value, onChange, label }: Props) {
+function QuestionTextInput({ value, onChange, label, disabled }: Props) {
   return (
     <CardPadding>
       <QuestionWrap>
@@ -23,6 +23,7 @@ function QuestionTextInput({ value, onChange, label }: Props) {
           id="standard-basic"
           variant="standard"
           label="Answer"
+          disabled={disabled}
           value={value}
           onChange={(e) => {
             onChange(e.target.value);

@@ -5,9 +5,9 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
-type Props = { value: any; onChange: any; label: string };
+type Props = { value: any; onChange: any; label: string; disabled: boolean };
 
-function QuestionCheckboxes({ value, onChange, label }: Props) {
+function QuestionCheckboxes({ value, onChange, label, disabled }: Props) {
   return (
     <CardPadding>
       <QuestionWrap>
@@ -15,6 +15,7 @@ function QuestionCheckboxes({ value, onChange, label }: Props) {
       </QuestionWrap>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
+          disabled={disabled}
           onChange={(newValue: any) => {
             const formattedDate = dayjs(newValue).toISOString();
             onChange(formattedDate);
