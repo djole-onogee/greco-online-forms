@@ -115,7 +115,7 @@ const Signing = () => {
         } else if (question?.type === 3) {
           return {
             id: question.id,
-            value: value === 0 ? false : true,
+            value: value === "0" ? true : false,
             type: question.type,
           };
         } else if (question?.type === 5) {
