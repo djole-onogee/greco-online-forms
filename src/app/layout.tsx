@@ -5,6 +5,7 @@ import StyledComponentsRegistry from "./registry";
 import { FormProvider } from "@/contexts/FormContext";
 import { Suspense } from "react";
 import { useForm, useFormContext } from "react-hook-form";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -15,6 +15,7 @@ import QuestionDatePicker from "@/components/Questions/QuestionDatePicker/Questi
 import { all } from "axios";
 import dayjs from "dayjs";
 import QuestionDropdown from "@/components/Questions/QuestionDropdown/QuestionDropdown";
+import toast from "react-hot-toast";
 
 const BackgroundWrap = styled.div`
   display: flex;
@@ -92,6 +93,7 @@ type Props = {};
 function FormPage({}: Props) {
   const {
     control,
+    handleSubmit,
     register,
     watch,
     setValue,
@@ -102,6 +104,14 @@ function FormPage({}: Props) {
 
   const router = useRouter();
   const all = watch();
+
+  const checkForErrors = () => {
+    if (Object.keys(errors).length > 0) {
+      Object.values(errors).forEach((err: any) => {
+        toast.error("Please fill " + err.ref.name + " field");
+      });
+    }
+  };
 
   useEffect(() => {
     questions?.sections?.map((section: any, index: number) => {
@@ -160,9 +170,7 @@ function FormPage({}: Props) {
                   return (
                     <Controller
                       key={index}
-                      {...register(`${question?.id}`, {
-                        validate: validateQuestion,
-                      })}
+                      {...register(`${question?.id}`)}
                       defaultValue={question?.defaultValue}
                       name={`${question?.id}`}
                       control={control}
@@ -259,7 +267,6 @@ function FormPage({}: Props) {
                     />
                   );
                 } else if (question?.type === 4) {
-                  console.log("question", question);
                   return (
                     <Controller
                       key={index}
@@ -294,6 +301,13 @@ function FormPage({}: Props) {
     });
   };
 
+  const onSubmit = async (data: any) => {
+    trigger();
+    const allAnswers = watch();
+    setAnswers(allAnswers);
+    router.push("form-preview");
+  };
+
   return (
     <PageTransition>
       <BackgroundWrap>
@@ -312,8 +326,16 @@ function FormPage({}: Props) {
             />
           </LogoIconWrap>
         </motion.div>
-        <form>{renderSections(questions)}</form>
-        <StyledButton
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {renderSections(questions)}
+          <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>
+            <Button type="submit" variant="contained" onClick={checkForErrors}>
+              Confirm answers
+            </Button>
+          </div>
+        </form>
+        {/* <StyledButton
           variant="outlined"
           onClick={() => {
             trigger();
@@ -323,7 +345,7 @@ function FormPage({}: Props) {
           }}
         >
           Confirm Answers
-        </StyledButton>
+        </StyledButton> */}
       </BackgroundWrap>
     </PageTransition>
   );
