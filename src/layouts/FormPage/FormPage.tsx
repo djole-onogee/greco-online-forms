@@ -316,15 +316,27 @@ function FormPage({}: Props) {
           animate="visible"
           variants={fadeInVariants}
         >
-          <LogoIconWrap>
-            {" "}
-            <Image
-              alt="asd"
-              src="./assets/greco-logo.svg"
-              height={75}
-              width={75}
-            />
-          </LogoIconWrap>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+            }}
+          >
+            <LogoIconWrap>
+              {" "}
+              <Image
+                alt="asd"
+                src="./assets/greco-logo.svg"
+                height={75}
+                width={75}
+              />
+            </LogoIconWrap>
+            <h4 style={{ color: "black", marginBottom: 30, marginTop: -20 }}>
+              Greco Smart Forms
+            </h4>
+          </div>
         </motion.div>
 
         <form onSubmit={handleSubmit(onSubmit)}>

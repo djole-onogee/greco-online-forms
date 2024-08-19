@@ -27,7 +27,7 @@ function DemoTemplate({ signature, signatureUploadImage, answers }: any) {
                 marginTop: "10px",
               }}
             >
-              <Text style={styles.orangeTextSmall}>www.greco-jlt.com</Text>
+              <Text style={styles.orangeTextSmall}>greco.services</Text>
             </View>
           </View>
 

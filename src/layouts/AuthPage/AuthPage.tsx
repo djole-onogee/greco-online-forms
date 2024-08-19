@@ -140,12 +140,24 @@ function AuthPage({}: Props) {
           <StyledPaper>
             <LogoIconWrap>
               {" "}
-              <Image
-                alt="asd"
-                src="./assets/greco-logo.svg"
-                height={70}
-                width={70}
-              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 0,
+                  paddingBottom: 0,
+                }}
+              >
+                <Image
+                  alt="asd"
+                  src="./assets/greco-logo.svg"
+                  height={70}
+                  width={70}
+                />
+                <h5 style={{ marginTop: 5 }}>Greco Smart Forms</h5>
+              </div>
             </LogoIconWrap>
             {phoneNumber ? (
               <PhoneNumberWrap>
